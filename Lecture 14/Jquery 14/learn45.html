@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery Examples</title>
+    <script src='jquery/jquery-3.6.0.min.js'></script>
+    <script>
+        function doSomething(){
+            var promise = new Promise(function(resolve){
+                setTimeout(function(){
+                    resolve("God is great");
+                    //the function whose address is passed to then function 
+                    //will get called beacause of abcd() or resolve()
+                },10000);
+            });
+            return promise;
+        }
+
+        function oneClicked()
+        {
+            // line one of oneClicked
+            var pp = doSomething()
+            // line two of twoClicked
+            .then(function(slogan){
+                console.log(slogan);
+            });
+            // line three of oneClicked
+            console.log("Delhi has become the Startup city of India")
+        }
+
+        async function twoClicked()
+        {
+            await doSomething().then(function(slogan){// first the promise will be resolved and then next line will run , no matter how much time it would take
+                console.log(slogan);
+            });
+            console.log("I live in Pune");
+        }
+
+        function timePass(ms){
+            return new Promise(function(resolve){
+                setTimeout(resolve, ms);
+            });
+        }
+
+        async function threeClicked()
+        {
+            console.log("Cool");
+            await timePass(5000); // await :- the timePass() will resolve the Promise first and then only it will move to next line 
+            console.log("Too Cool")
+        }
+    </script>
+</head>
+<body>
+    <h1>Example 45</h1>
+    <button type="button" onclick="oneClicked()">Button 1</button><br/><br/>
+    <button type="button" onclick="twoClicked()">Button 2</button><br/><br/>
+    <button type="button" onclick="threeClicked()">Button 3</button>
+    <br/><br/>
+    <br><a href="/">Home</a>
+</body>
+</html>

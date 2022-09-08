@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>JQuery Examples</title>
+    <link rel="stylesheet" href="jquery-ui-1.13.1/jquery-ui.css">
+    <script src='jquery/jquery-3.6.0.min.js'></script>
+    <script src='jquery-ui-1.13.1/jquery-ui.js'></script>
+    <script>
+
+        const getEmployeesByDepartment =(departmentId)=>{
+		var promise = new Promise((resolve)=>{
+		fetch(`getEmployeesByDepartment?departmentId=${departmentId}`)
+		.then((response)=>{ 
+		return response.json(); 
+		}).then((employees)=>{
+		resolve(employees);
+		});
+})
+		return promise;
+	}
+
+        const getDepartments = () => {
+            var promise = new Promise((resolve) => {
+                fetch("/getDepartments")
+                    .then((response) => {
+                        return response.json();
+                    }).then((departments) => {
+                        resolve(departments);
+                    });
+            });
+            return promise;
+        }
+
+        var dataModel = {
+            "departments": []
+        }
+
+        $(() => {
+
+            getDepartments().then((departments) => {
+                dataModel.departments = departments;
+               // alert(dataModel.departments.length);
+		var k = $("#departments");
+		dataModel.departments.forEach((department)=>{
+		var heading = $(`<h3 id='H${department.id}'>${department.name}</h3>`);
+		var division = $(`<div id='D${department.id}'></h3>`);
+		k.append(heading);
+		k.append(division);
+		});
+
+		$("#departments").accordion();
+
+		var k = $(`div[id=D${dataModel.departments[0].id}]`);
+		var departmentId = dataModel.departments[0].id;
+
+		getEmployeesByDepartment(departmentId).then((employees)=>{
+		dataModel.departments[0].employees = employees;
+		var ul = $("<ul>");
+		employees.forEach((employee)=>{
+		var li = $(`<li>${employee.firstName} ${employee.lastName}</li>`);
+		ul.append(li);
+}); 
+		k.append(ul);
+
+		$("#departments").accordion("refresh");
+		})
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Example 56 </h1>
+    <h3>Departments</h3>
+    <div id='departments'>
+    </div>
+    <br>
+    <br><a href='/'>Home</a>
+</body>
+
+</html>

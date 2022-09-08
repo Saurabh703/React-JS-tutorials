@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery Examples</title>
+    <link rel="stylesheet" href="jquery-ui-1.13.1/jquery-ui.css">
+    <script src='jquery/jquery-3.6.0.min.js'></script>
+    <script src="jquery-ui-1.13.1/jquery-ui.js"></script>
+    <script>
+        function getFirstNames()
+        {
+            var promise = new Promise((resolve)=>{
+                fetch("/getFirstNames")
+                .then((response)=>{ return response.json(); })
+                .then((employees)=>{ 
+                    resolve(employees);
+                });
+            })
+            return promise;
+        }
+
+         $(()=>{
+            $("#firstNames").autocomplete({ 
+                source: function(data,giveBackThrough){
+                    getFirstNames().then((emp)=>{
+                        console.log(emp);
+                        var frst = [];
+                        var i = 0;
+                        while (i<emp.length) {
+                            
+                                frst.push(emp[i]);
+                            
+                            i++;
+                        }
+                        giveBackThrough(frst);
+                    })
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <h1>Example 48</h1>
+    First Name: <input type="text" id="firstNames" onchange="getFirstNames()"><br><br>
+    <br><a href="/">Home</a>
+</body>
+</html>

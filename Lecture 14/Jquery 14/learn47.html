@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery Examples</title>
+    <link rel="stylesheet" href="jquery-ui-1.13.1/jquery-ui.css">
+    <script src='jquery/jquery-3.6.0.min.js'></script>
+    <script src="jquery-ui-1.13.1/jquery-ui.js"></script>
+    <script>
+        var firstNames=["Amit", "Sudhir","Gopal","Ganesh","Praneet","Lalita","Geeta","Babita","Prakash","Panjaj","Sachin","Sambhu","Bobby"];
+        
+        var lastNames=["Sharma","Gupta","Joshi","Patidar","Gajbiye","Gedam", "Shetty","Devgan","Upadhayaya"];
+        
+        $(()=>{
+            $("#firstNames").autocomplete({ // every element of an array will be shown down the list
+                source: firstNames
+            });
+
+        $("#lastNames").autocomplete({ // only element with same left part will be shown down the list 
+            source: function(data,giveBackThrough){
+                var lst=[];
+                var i=0;
+                while (i<lastNames.length) {
+                    if (lastNames[i].toLowerCase().startsWith(data.term.toLowerCase())) 
+                    {
+                        lst.push(lastNames[i]);
+                    }
+                    i++;
+                }
+                giveBackThrough(lst);
+            }
+        })
+        })
+    </script>
+</head>
+<body>
+    <h1>Example 47</h1>
+    First Name: <input type="text" id="firstNames"><br><br>
+    Last Name: <input type="text" id="lastNames"><br><br>
+    <br><a href="/">Home</a>
+</body>
+</html>
